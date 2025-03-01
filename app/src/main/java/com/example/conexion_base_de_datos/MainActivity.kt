@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.conexion_base_de_datos.Navegation.NavegationWrapper
 import com.example.conexion_base_de_datos.screens.PersonScreen
 import com.example.conexion_base_de_datos.ui.theme.Conexion_Base_de_DatosTheme
 
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Conexion_Base_de_DatosTheme {
-               PersonScreen()
+               NavegationWrapper()
             }
         }
     }

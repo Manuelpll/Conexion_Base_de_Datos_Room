@@ -11,22 +11,19 @@ import androidx.room.Room
 import com.example.conexion_base_de_datos.data.PeopleDB
 import com.example.conexion_base_de_datos.data.Person
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class PersonViewModel(application: Application) : AndroidViewModel(application) {
-
+class ViewModel(application: Application) : AndroidViewModel(application) {
     //Creacion de la base de datos
     private val db = Room.databaseBuilder(
         application, PeopleDB::class.java, "person_db"
     ).build()
-
 //Objeto DAO para trabajar con la base de datos
     private val personDao = db.personDao()
-
 //Variables de la app
     val peopleList = mutableStateListOf<Person>()
-
     var name by mutableStateOf("")
     var age by mutableStateOf("")
     var address by mutableStateOf("")
@@ -56,6 +53,18 @@ class PersonViewModel(application: Application) : AndroidViewModel(application) 
             }
         }
     }
+    //Metodo que acualiza el nombre
+    fun updateNombre(nuevoNombre: String) {
+        name= nuevoNombre
+    }
+    //Metodo que acualiza la edad
+    fun updateEdad(nuevaEdad: String) {
+        age = nuevaEdad
+    }
+    //Metodo que actualiza la dirreccion
+    fun updateDireccion(nuevaDirecion: String){
+        address = nuevaDirecion
+    }
 //Metodo para actualizar la personas
 fun updatePerson() {
     selectedPerson?.let {
@@ -70,10 +79,23 @@ fun updatePerson() {
         }
     }
 }
+    //Metodo que elimina una persona
+    fun deletePerson(person: Person) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                personDao.delete(person)
+            }
+            loadPeople()
+        }
+    }
 //Metodo que resetea las variables para volver a usarlas
     private fun clearFields() {
         name = ""
         age = ""
         address = ""
+    }
+    //Metodo que obtiene el id de la persona elegida
+    fun getPersonById(id: Int): Person? {
+        return peopleList.find { it.id == id }
     }
 }

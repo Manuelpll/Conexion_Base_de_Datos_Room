@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt") // Importante para Room
+    alias(libs.plugins.jetbrainsKotlinSerialization) //Navegacion
 }
 
 android {
@@ -51,6 +52,9 @@ android {
 }
 
 dependencies {
+    //Navigation
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
     // Room
     implementation("androidx.room:room-runtime:2.6.0-alpha01")
     kapt("androidx.room:room-compiler:2.6.0-alpha01")
